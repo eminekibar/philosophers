@@ -1,0 +1,58 @@
+#include "philo.h"
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	unsigned char	*ptr;
+
+	ptr = (unsigned char *)b;
+	i = 0;
+	while (i < len)
+	{
+		ptr[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}
+
+char	*is_valid(char *str)
+{
+	int			len;
+	char	*number;
+
+	len = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+		exit_safe("Only positive numbers!", EXIT_FAILURE);
+	number = str;
+	while (*str == '0')
+		str++;
+	while (*str >= '0' && *str <= '9')
+	{
+		len++;
+		str++;
+	}
+	if (!(*str >= '0' && *str <= '9') && *str != '\0')
+		exit_safe("Only positive numbers!", EXIT_FAILURE);
+	if (len > 10)
+		exit_safe("Integer limit error!", EXIT_FAILURE);
+	return (number);
+}
+
+long	ft_atol(char *str)
+{
+	int		i;
+	long	num;
+
+	num = 0;
+	str = is_valid(str);
+	i = -1;
+	while (str[++i] >= '0' && str[i] <= '9')
+		num = num * 10 + str[i] - '0';
+	if (num > INT_MAX)
+		exit_safe("Integer limit error!", EXIT_FAILURE);
+	return (num);
+}
