@@ -11,9 +11,6 @@ void     free_all(t_table *table)
         int     i;
 
         i = -1;
-        while (++i < table->number_of_philosophers)
-                pthread_join((table->philo + i)->philos, NULL);
-        i = -1;
         while (++i < table->init_forkmutex_count)
                 pthread_mutex_destroy(&table->forks[i]);
         i = -1;

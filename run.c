@@ -57,6 +57,9 @@ int     run_philosophers(t_table *table)
     if (pthread_create(&monitor_thread, NULL, monitor, table))
         return (1);
     pthread_join(monitor_thread, NULL);
+    i = -1;
+    while (++i < table->number_of_philosophers)
+        pthread_join(table->philo[i].philos, NULL);
     free_all(table);
     return (0);
 }
