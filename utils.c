@@ -1,8 +1,9 @@
 #include "philo.h"
 
-void	exit_safe(char *str, int exit_code)
+void	exit_safe(char *str, int exit_code, t_table *table)
 {
         printf("%s%s%s", RED, str, DEFAULT);
+        free_all(table);
         exit(exit_code);
 }
 
@@ -11,15 +12,25 @@ void     free_all(t_table *table)
         int     i;
 
         i = -1;
-        while (++i < table->init_forkmutex_count)
-                pthread_mutex_destroy(&table->forks[i]);
+        if(table->forks)
+        {
+                while (++i < table->init_forkmutex_count)
+                        pthread_mutex_destroy(&table->forks[i]);
+        }
         i = -1;
-        while (++i < table->init_eatmutex_count)
-                pthread_mutex_destroy(&table->philo[i].eating_mutex);
-        pthread_mutex_destroy(&table->writing);
-        pthread_mutex_destroy(&table->die_check);
-        free(table->philo);
-        free(table->forks);
+        if(table->philo)
+        {
+                while (++i < table->init_eatmutex_count)
+                        pthread_mutex_destroy(&table->philo[i].eating_mutex);
+        }
+        if(table->init_writing_mutex == 1)
+                pthread_mutex_destroy(&table->writing);
+        if(table->init_diecheck_mutex == 1)
+                pthread_mutex_destroy(&table->die_check);
+        if(table->philo)
+                free(table->philo);
+        if(table->forks)
+                free(table->forks);
 }
 
 void	philo_msg(char *str, t_table *table, int philo_id)

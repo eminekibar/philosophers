@@ -25,27 +25,29 @@ static int	check_args(t_table *table, int argc)
 	if (table->number_of_philosophers == 1)
 	{
 		one_philo(table);
-		exit_safe("", EXIT_SUCCESS);
+		exit_safe("", EXIT_SUCCESS, table);
 	}
 	return (0);
 }
 
 int	check_and_parse(t_table *table, char **argv, int argc)
 {
-	table->number_of_philosophers = ft_atol(argv[1]);
-	table->time_to_die = ft_atol(argv[2]);
-	table->time_to_eat = ft_atol(argv[3]);
-	table->time_to_sleep = ft_atol(argv[4]);
+	table->number_of_philosophers = ft_atol(argv[1], table);
+	table->time_to_die = ft_atol(argv[2], table);
+	table->time_to_eat = ft_atol(argv[3], table);
+	table->time_to_sleep = ft_atol(argv[4], table);
 	if (argc == 6)
-		table->number_of_times_each_philosopher_must_eat = ft_atol(argv[5]);
+		table->number_of_times_each_philosopher_must_eat = ft_atol(argv[5], table);
 	else
 		table->number_of_times_each_philosopher_must_eat = -1;
 	table->dead_flag = 1;
 	table->full_flag = 1;
 	table->init_forkmutex_count = 0;
     table->init_eatmutex_count = 0;
+	table->init_writing_mutex = 0;
+	table->init_diecheck_mutex = 0;
 	if (check_args(table, argc))
-		exit_safe("Invalid arguments!", EXIT_FAILURE);
+		exit_safe("Invalid arguments!", EXIT_FAILURE, table);
 	init_all(table);
 	return (0);
 }

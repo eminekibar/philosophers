@@ -36,6 +36,8 @@ typedef struct s_table
 	int				i;
 	int				init_eatmutex_count;
 	int				init_forkmutex_count;
+	int 			init_writing_mutex;
+	int 			init_diecheck_mutex;
 	long long		start_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
@@ -46,13 +48,13 @@ typedef struct s_table
 int		check_and_parse(t_table *table, char **str, int argc);
 int 	eat_meal(t_philo *philo);
 int		run_philosophers(t_table *table);
-long	ft_atol(char *str);
+long	ft_atol(char *str, t_table *table);
 long long	current_time_ms(void);
-char	*is_valid(char *str);
+char	*is_valid(char *str, t_table *table);
 void	*monitor(void *t);
 void	*ft_memset(void *b, int c, size_t len);
 void     free_all(t_table *table);
-void	exit_safe(char *str, int exit_code);
+void	exit_safe(char *str, int exit_code, t_table *table);
 void	philo_msg(char *str, t_table *table, int id);
 void	ft_wait(long long wait_time, t_table *table);
 void	init_all(t_table *table);

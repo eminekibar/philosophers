@@ -15,7 +15,7 @@ void	*ft_memset(void *b, int c, size_t len)
 	return (b);
 }
 
-char	*is_valid(char *str)
+char	*is_valid(char *str, t_table *table)
 {
 	int			len;
 	char	*number;
@@ -26,7 +26,7 @@ char	*is_valid(char *str)
 	if (*str == '+')
 		str++;
 	else if (*str == '-')
-		exit_safe("Only positive numbers!", EXIT_FAILURE);
+		exit_safe("Only positive numbers!", EXIT_FAILURE, table);
 	number = str;
 	while (*str == '0')
 		str++;
@@ -36,23 +36,23 @@ char	*is_valid(char *str)
 		str++;
 	}
 	if (!(*str >= '0' && *str <= '9') && *str != '\0')
-		exit_safe("Only positive numbers!", EXIT_FAILURE);
+		exit_safe("Only positive numbers!", EXIT_FAILURE, table);
 	if (len > 10)
-		exit_safe("Integer limit error!", EXIT_FAILURE);
+		exit_safe("Integer limit error!", EXIT_FAILURE, table);
 	return (number);
 }
 
-long	ft_atol(char *str)
+long	ft_atol(char *str, t_table *table)
 {
 	int		i;
 	long	num;
 
 	num = 0;
-	str = is_valid(str);
+	str = is_valid(str, table);
 	i = -1;
 	while (str[++i] >= '0' && str[i] <= '9')
 		num = num * 10 + str[i] - '0';
 	if (num > INT_MAX)
-		exit_safe("Integer limit error!", EXIT_FAILURE);
+		exit_safe("Integer limit error!", EXIT_FAILURE, table);
 	return (num);
 }
