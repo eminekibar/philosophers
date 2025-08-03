@@ -8,7 +8,7 @@ static void one_philo(t_table *table)
 	printf("%s%d%s", RED, 0, DEFAULT);
 	printf("%s %d %s", GREEN, 1, DEFAULT);
 	printf("%s\n", "has taken a fork");
-    usleep(table->time_to_die * 1000);
+	usleep(table->time_to_die * 1000);
 	printf("%s%lld%s", RED, (current_time_ms() - start_time), DEFAULT);
 	printf("%s %d %s", GREEN, 1, DEFAULT);
 	printf("%s\n", "is died");

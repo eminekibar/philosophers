@@ -24,12 +24,17 @@ void     free_all(t_table *table)
 
 void	philo_msg(char *str, t_table *table, int philo_id)
 {
-	pthread_mutex_lock(&table->writing);
-        if (table->dead_flag)
+        int flag;
+        
+        pthread_mutex_lock(&table->die_check);
+        flag = table->dead_flag;
+        pthread_mutex_unlock(&table->die_check);
+        if (flag)
 	{
+                pthread_mutex_lock(&table->writing);
 		printf("%s%lld%s", RED, (current_time_ms() - table->start_time), DEFAULT);
 		printf("%s %d %s", GREEN, philo_id + 1, DEFAULT);
 		printf("%s\n", str);
+                pthread_mutex_unlock(&table->writing);
 	}
-	pthread_mutex_unlock(&table->writing);
 }

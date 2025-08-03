@@ -25,17 +25,18 @@ static void	lock_forks(t_philo *philo)
 
 static void	eat_action(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->die_check);
 	philo_msg("is eating", philo->table, philo->id);
 	pthread_mutex_lock(&philo->eating_mutex);
 	philo->last_eat_time = current_time_ms();
 	pthread_mutex_unlock(&philo->eating_mutex);
-	pthread_mutex_unlock(&philo->table->die_check);
+
 	ft_wait(philo->table->time_to_eat, philo->table);
+
 	pthread_mutex_lock(&philo->eating_mutex);
 	philo->meal_count++;
 	pthread_mutex_unlock(&philo->eating_mutex);
 }
+
 
 static void	unlock_forks(t_philo *philo)
 {
