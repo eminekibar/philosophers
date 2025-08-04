@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_and_parse.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 20:05:27 by ekibar            #+#    #+#             */
+/*   Updated: 2025/08/04 20:49:03 by ekibar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-static void one_philo(t_table *table)
+static void	one_philo(t_table *table)
 {
-	long long start_time;
-		
+	long long	start_time;
+
 	start_time = current_time_ms();
 	printf("%s%d%s", RED, 0, DEFAULT);
 	printf("%s %d %s", GREEN, 1, DEFAULT);
@@ -37,15 +49,16 @@ int	check_and_parse(t_table *table, char **argv, int argc)
 	table->time_to_eat = ft_atol(argv[3], table);
 	table->time_to_sleep = ft_atol(argv[4], table);
 	if (argc == 6)
-		table->number_of_times_each_philosopher_must_eat = ft_atol(argv[5], table);
+		table->number_of_times_each_philosopher_must_eat = ft_atol(argv[5],
+				table);
 	else
 		table->number_of_times_each_philosopher_must_eat = -1;
 	table->dead_flag = 1;
 	table->full_flag = 1;
 	table->init_forkmutex_count = 0;
-    table->init_eatmutex_count = 0;
+	table->init_eatmutex_count = 0;
 	table->init_writing_mutex = 0;
-	table->init_diecheck_mutex = 0;
+	table->init_die_check_mutex = 0;
 	if (check_args(table, argc))
 		exit_safe("Invalid arguments!", EXIT_FAILURE, table);
 	init_all(table);

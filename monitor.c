@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 20:40:31 by ekibar            #+#    #+#             */
+/*   Updated: 2025/08/04 20:40:31 by ekibar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static int	check_death(t_table *table)
 {
-	int i;
-    long last_eat;
+	long	last_eat;
+	int		i;
 
-    last_eat = 0;
-    i = -1;
+	last_eat = 0;
+	i = -1;
 	while (++i < table->number_of_philosophers)
 	{
 		pthread_mutex_lock(&table->philo[i].eating_mutex);
@@ -14,7 +26,7 @@ static int	check_death(t_table *table)
 		pthread_mutex_unlock(&table->philo[i].eating_mutex);
 		if ((current_time_ms() - last_eat) > table->time_to_die)
 		{
-			philo_msg("is died", table, table->philo[i].id);
+			ft_message("is died", table, table->philo[i].id);
 			pthread_mutex_lock(&table->die_check);
 			table->dead_flag = 0;
 			pthread_mutex_unlock(&table->die_check);
@@ -39,8 +51,8 @@ static int	is_philo_full(t_philo *philo, int max_eat)
 
 static int	check_all_full(t_table *table)
 {
-	int all_full;
-	int i;
+	int	all_full;
+	int	i;
 
 	all_full = 1;
 	i = -1;
@@ -48,10 +60,11 @@ static int	check_all_full(t_table *table)
 		return (0);
 	while (++i < table->number_of_philosophers)
 	{
-		if (!is_philo_full(&table->philo[i], table->number_of_times_each_philosopher_must_eat))
+		if (!is_philo_full(&table->philo[i],
+				table->number_of_times_each_philosopher_must_eat))
 		{
 			all_full = 0;
-			break;
+			break ;
 		}
 	}
 	if (all_full)
@@ -64,24 +77,24 @@ static int	check_all_full(t_table *table)
 	return (0);
 }
 
-void *monitor(void *t)
+void	*monitor(void *t)
 {
-	t_table *table;
+	t_table	*table;
 
-    table = (t_table *)t;
+	table = (t_table *)t;
 	while (1)
 	{
 		pthread_mutex_lock(&table->die_check);
 		if (!table->full_flag || !table->dead_flag)
 		{
 			pthread_mutex_unlock(&table->die_check);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&table->die_check);
 		if (check_death(table))
-			break;
+			break ;
 		if (check_all_full(table))
-			break;
+			break ;
 	}
-	return NULL;
+	return (NULL);
 }

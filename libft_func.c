@@ -1,4 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_func.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/04 20:05:39 by ekibar            #+#    #+#             */
+/*   Updated: 2025/08/04 20:05:39 by ekibar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 void	*ft_memset(void *b, int c, size_t len)
 {
@@ -17,7 +39,7 @@ void	*ft_memset(void *b, int c, size_t len)
 
 char	*is_valid(char *str, t_table *table)
 {
-	int			len;
+	int		len;
 	char	*number;
 
 	len = 0;

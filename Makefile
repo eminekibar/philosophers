@@ -11,6 +11,8 @@ SRCS := main.c \
 		eat.c \
 		init.c \
 		monitor.c \
+		ft_split.c \
+		args.c
                           
 OBJS := $(SRCS:.c=.o)
 
