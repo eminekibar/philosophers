@@ -6,25 +6,11 @@
 /*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:06:10 by ekibar            #+#    #+#             */
-/*   Updated: 2025/08/04 21:30:23 by ekibar           ###   ########.fr       */
+/*   Updated: 2025/08/06 21:33:14 by ekibar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_error(char *str)
-{
-	free(str);
-	write(2, "Error\n", 6);
-	exit(1);
-}
-
-void	exit_safe(char *str, int exit_code, t_table *table)
-{
-	printf("%s%s%s", RED, str, DEFAULT);
-	free_all(table);
-	exit(exit_code);
-}
 
 void	free_all(t_table *table)
 {

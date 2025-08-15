@@ -12,16 +12,6 @@
 
 #include "philo.h"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 void	*ft_memset(void *b, int c, size_t len)
 {
 	size_t			i;
@@ -48,7 +38,7 @@ char	*is_valid(char *str, t_table *table)
 	if (*str == '+')
 		str++;
 	else if (*str == '-')
-		exit_safe("Only positive numbers!", EXIT_FAILURE, table);
+		table->error_flag = 1;
 	number = str;
 	while (*str == '0')
 		str++;
@@ -58,9 +48,9 @@ char	*is_valid(char *str, t_table *table)
 		str++;
 	}
 	if (!(*str >= '0' && *str <= '9') && *str != '\0')
-		exit_safe("Only positive numbers!", EXIT_FAILURE, table);
+		table->error_flag = 1;
 	if (len > 10)
-		exit_safe("Integer limit error!", EXIT_FAILURE, table);
+		table->error_flag = 1;
 	return (number);
 }
 
@@ -75,6 +65,6 @@ long	ft_atol(char *str, t_table *table)
 	while (str[++i] >= '0' && str[i] <= '9')
 		num = num * 10 + str[i] - '0';
 	if (num > INT_MAX)
-		exit_safe("Integer limit error!", EXIT_FAILURE, table);
+		table->error_flag = 1;
 	return (num);
 }

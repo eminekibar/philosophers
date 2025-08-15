@@ -6,7 +6,7 @@
 /*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:11:02 by ekibar            #+#    #+#             */
-/*   Updated: 2025/08/04 21:33:30 by ekibar           ###   ########.fr       */
+/*   Updated: 2025/08/06 21:30:14 by ekibar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_table
 	int				number_of_times_each_philosopher_must_eat;
 	int				dead_flag;
 	int				full_flag;
+	int				error_flag;
 	int				i;
 	int				init_eatmutex_count;
 	int				init_forkmutex_count;
@@ -67,16 +68,8 @@ char				*is_valid(char *str, t_table *table);
 void				*monitor(void *t);
 void				*ft_memset(void *b, int c, size_t len);
 void				free_all(t_table *table);
-void				exit_safe(char *str, int exit_code, t_table *table);
 void				ft_message(char *str, t_table *table, int id);
 void				ft_wait(long long wait_time, t_table *table);
-void				init_all(t_table *table);
-void				ft_error(char *str);
-int					ft_strlen(char *str);
-int					count_words(char *str, char separator);
-char				*get_next_word(char *str, char separator);
-char				**ft_split(char *str, char separator);
-char				*ft_strjoin_args(int argc, char **argv);
-char				**argv_split(int *argc, char **argv);
+int					init_all(t_table *table);
 
 #endif

@@ -10,9 +10,7 @@ SRCS := main.c \
 		libft_func.c \
 		eat.c \
 		init.c \
-		monitor.c \
-		ft_split.c \
-		args.c
+		monitor.c
                           
 OBJS := $(SRCS:.c=.o)
 

@@ -56,18 +56,19 @@ static int	mutex_init(t_table *table)
 	return (0);
 }
 
-void	init_all(t_table *table)
+int	init_all(t_table *table)
 {
 	table->philo = malloc(sizeof(t_philo) * table->number_of_philosophers);
 	if (!table->philo)
-		exit_safe("Malloc error!", EXIT_FAILURE, table);
+		return (1);
 	table->forks = malloc(sizeof(pthread_mutex_t)
 			* table->number_of_philosophers);
 	if (!table->forks)
-		exit_safe("Malloc error!", EXIT_FAILURE, table);
+		return (1);
 	ft_memset(table->forks, 0, sizeof(pthread_mutex_t)
 		* table->number_of_philosophers);
 	if (mutex_init(table))
-		exit_safe("Mutex error!", EXIT_FAILURE, table);
+		return (1);
 	philo_init(table);
+	return (0);
 }

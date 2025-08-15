@@ -6,25 +6,11 @@
 /*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:05:27 by ekibar            #+#    #+#             */
-/*   Updated: 2025/08/04 20:49:03 by ekibar           ###   ########.fr       */
+/*   Updated: 2025/08/06 22:09:37 by ekibar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static void	one_philo(t_table *table)
-{
-	long long	start_time;
-
-	start_time = current_time_ms();
-	printf("%s%d%s", RED, 0, DEFAULT);
-	printf("%s %d %s", GREEN, 1, DEFAULT);
-	printf("%s\n", "has taken a fork");
-	usleep(table->time_to_die * 1000);
-	printf("%s%lld%s", RED, (current_time_ms() - start_time), DEFAULT);
-	printf("%s %d %s", GREEN, 1, DEFAULT);
-	printf("%s\n", "is died");
-}
 
 static int	check_args(t_table *table, int argc)
 {
@@ -32,13 +18,8 @@ static int	check_args(t_table *table, int argc)
 		|| table->time_to_eat < 0 || table->time_to_sleep < 0)
 		return (1);
 	if (argc == 6)
-		if (table->number_of_times_each_philosopher_must_eat < 0)
+		if (table->number_of_times_each_philosopher_must_eat < 1)
 			return (1);
-	if (table->number_of_philosophers == 1)
-	{
-		one_philo(table);
-		exit_safe("", EXIT_SUCCESS, table);
-	}
 	return (0);
 }
 
@@ -53,14 +34,18 @@ int	check_and_parse(t_table *table, char **argv, int argc)
 				table);
 	else
 		table->number_of_times_each_philosopher_must_eat = -1;
+	if (table->error_flag)
+		return (1);
 	table->dead_flag = 1;
 	table->full_flag = 1;
+	table->error_flag = 0;
 	table->init_forkmutex_count = 0;
 	table->init_eatmutex_count = 0;
 	table->init_writing_mutex = 0;
 	table->init_die_check_mutex = 0;
 	if (check_args(table, argc))
-		exit_safe("Invalid arguments!", EXIT_FAILURE, table);
-	init_all(table);
+		return (1);
+	if (init_all(table))
+		return (1);
 	return (0);
 }

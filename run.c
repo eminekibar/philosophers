@@ -6,11 +6,25 @@
 /*   By: ekibar <ekibar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 20:06:02 by ekibar            #+#    #+#             */
-/*   Updated: 2025/08/04 20:43:58 by ekibar           ###   ########.fr       */
+/*   Updated: 2025/08/06 21:55:23 by ekibar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	one_philo(t_table *table)
+{
+	long long	start_time;
+
+	start_time = current_time_ms();
+	printf("%s%d%s", RED, 0, DEFAULT);
+	printf("%s %d %s", GREEN, 1, DEFAULT);
+	printf("%s\n", "has taken a fork");
+	usleep(table->time_to_die * 1000);
+	printf("%s%lld%s", RED, (current_time_ms() - start_time), DEFAULT);
+	printf("%s %d %s", GREEN, 1, DEFAULT);
+	printf("%s\n", "is died");
+}
 
 static int	check_stop_conditions(t_philo *ph)
 {
@@ -50,21 +64,31 @@ void	*routine(void *philo)
 	return (NULL);
 }
 
+static void	lock_eat_time(t_table *table, int i)
+{
+	pthread_mutex_lock(&table->philo[i].eating_mutex);
+	(table->philo + i)->last_eat_time = current_time_ms();
+	pthread_mutex_unlock(&table->philo[i].eating_mutex);
+}
+
 int	run_philosophers(t_table *table)
 {
 	int			i;
 	pthread_t	monitor_thread;
 
 	i = -1;
+	if (table->number_of_philosophers == 1)
+	{
+		one_philo(table);
+		return (0);
+	}
 	table->start_time = current_time_ms();
 	while (++i < table->number_of_philosophers)
 	{
 		if (pthread_create(&(table->philo + i)->philos, NULL,
 				routine, table->philo + i))
 			return (1);
-		pthread_mutex_lock(&table->philo[i].eating_mutex);
-		(table->philo + i)->last_eat_time = current_time_ms();
-		pthread_mutex_unlock(&table->philo[i].eating_mutex);
+		lock_eat_time(table, i);
 	}
 	if (pthread_create(&monitor_thread, NULL, monitor, table))
 		return (1);
@@ -72,6 +96,5 @@ int	run_philosophers(t_table *table)
 	i = -1;
 	while (++i < table->number_of_philosophers)
 		pthread_join(table->philo[i].philos, NULL);
-	free_all(table);
 	return (0);
 }
